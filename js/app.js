@@ -3,11 +3,13 @@ document.addEventListener("DOMContentLoaded", () => {
   const wineList = document.getElementById("wine-list");
   const ratingSlider = document.getElementById("wine-rating");
   const ratingValue = document.getElementById("rating-value");
+  const sweetnessSlider = document.getElementById("sweetness");
+  const sweetnessValue = document.getElementById("sweetness-value");
   const tableHeader = document.querySelector("#wine-table thead");
 
   // --- State Management ---
   let sortState = {
-    column: null, // 'rating', 'alcohol', 'grape'
+    column: null, // 'rating', 'alcohol', 'grape', 'sweetness'
     direction: "asc", // 'asc' or 'desc'
   };
 
@@ -47,7 +49,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (wines.length === 0) {
       const emptyRow = document.createElement("tr");
       emptyRow.innerHTML =
-        '<td colspan="6" style="text-align:center; padding: 20px; display: block;">No wines added yet.</td>';
+        '<td colspan="7" style="text-align:center; padding: 20px; display: block;">No wines added yet.</td>';
       wineList.appendChild(emptyRow);
       return;
     }
@@ -61,6 +63,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 <td data-label="Rating">${parseFloat(wine.rating).toFixed(
                   1
                 )} / 5 ⭐</td>
+                <td data-label="Sweetness">${wine.sweetness}</td>
                 <td data-label="Comment">${wine.comment}</td>
                 <td data-label="Action">
                     <button class="delete-btn" data-id="${
@@ -97,6 +100,11 @@ document.addEventListener("DOMContentLoaded", () => {
     ratingValue.textContent = parseFloat(ratingSlider.value).toFixed(1);
   });
 
+  // Update sweetness value display when slider moves
+  sweetnessSlider.addEventListener("input", () => {
+    sweetnessValue.textContent = sweetnessSlider.value;
+  });
+
   // Handle form submission
   wineForm.addEventListener("submit", (e) => {
     e.preventDefault();
@@ -107,6 +115,7 @@ document.addEventListener("DOMContentLoaded", () => {
       alcohol: parseFloat(document.getElementById("alcohol-amount").value),
       grape: document.getElementById("grape-type").value.trim(),
       rating: parseFloat(document.getElementById("wine-rating").value),
+      sweetness: parseInt(document.getElementById("sweetness").value),
       comment: document.getElementById("user-comment").value.trim(),
     };
 
@@ -117,6 +126,7 @@ document.addEventListener("DOMContentLoaded", () => {
     renderWines();
     wineForm.reset();
     ratingValue.textContent = "2.5"; // Reset slider display
+    sweetnessValue.textContent = "5"; // Reset sweetness display
   });
 
   // Handle delete button clicks using event delegation
