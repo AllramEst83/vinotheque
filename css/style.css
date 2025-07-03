@@ -314,6 +314,14 @@ footer {
     text-align: center;
   }
 }
+#wine-table td {
+  white-space: normal !important;
+  word-break: break-word;
+}
+
+#wine-table th {
+  white-space: nowrap;
+}
 
 @media (max-width: 767px) {
   .container {
