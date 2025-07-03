@@ -111,7 +111,8 @@ textarea {
   gap: 10px;
 }
 
-#rating-value {
+#rebecka-rating-value,
+#kay-rating-value {
   font-weight: bold;
   color: var(--primary-color);
   /* min-width: 30px; */

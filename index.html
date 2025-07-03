@@ -62,23 +62,6 @@
               />
             </div>
             <div class="form-group">
-              <label for="wine-rating">Rating (0-5)</label>
-              <div class="rating-group">
-                <span>0</span>
-                <input
-                  type="range"
-                  id="wine-rating"
-                  min="0"
-                  max="5"
-                  step="0.5"
-                  value="2.5"
-                />
-                <span id="rating-value">2.5</span>
-                <span>/</span>
-                <span>5</span>
-              </div>
-            </div>
-            <div class="form-group">
               <label for="sweetness">Sweetness (0-12)</label>
               <div class="rating-group">
                 <span>0</span>
@@ -93,6 +76,40 @@
                 <span id="sweetness-value">6</span>
                 <span>/</span>
                 <span>12</span>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="kay-rating">Rated by Kay (0-5)</label>
+              <div class="rating-group">
+                <span>0</span>
+                <input
+                  type="range"
+                  id="kay-rating"
+                  min="0"
+                  max="5"
+                  step="0.5"
+                  value="2.5"
+                />
+                <span id="kay-rating-value">2.5</span>
+                <span>/</span>
+                <span>5</span>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="rebecka-rating">Rated by Rebecka (0-5)</label>
+              <div class="rating-group">
+                <span>0</span>
+                <input
+                  type="range"
+                  id="rebecka-rating"
+                  min="0"
+                  max="5"
+                  step="0.5"
+                  value="2.5"
+                />
+                <span id="rebecka-rating-value">2.5</span>
+                <span>/</span>
+                <span>5</span>
               </div>
             </div>
             <div class="form-group">
@@ -122,6 +139,8 @@
                   <th>Grape</th>
                   <th>Rating</th>
                   <th>Sweetness</th>
+                  <th>Rated by Kay</th>
+                  <th>Rated by Rebecka</th>
                   <th>Comment</th>
                   <th>Action</th>
                 </tr>

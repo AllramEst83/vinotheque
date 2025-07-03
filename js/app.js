@@ -14,6 +14,10 @@ $(document).ready(function () {
   const ratingValue = $("#rating-value");
   const sweetnessSlider = $("#sweetness");
   const sweetnessValue = $("#sweetness-value");
+  const kayRatingSlider = $("#kay-rating");
+  const kayRatingValue = $("#kay-rating-value");
+  const rebeckaRatingSlider = $("#rebecka-rating");
+  const rebeckaRatingValue = $("#rebecka-rating-value");
 
   // Load wines from Supabase
   async function loadWines() {
@@ -53,8 +57,13 @@ $(document).ready(function () {
       { data: "alcohol", title: "ABV %", render: (d) => `${d}%` },
       { data: "grape", title: "Grape" },
       {
-        data: "rating",
-        title: "Rating",
+        data: "kayRating",
+        title: "Rated by Kay",
+        render: (d) => `${parseFloat(d).toFixed(1)} / 5 ⭐`,
+      },
+      {
+        data: "rebeckaRating",
+        title: "Rated by Rebecka",
         render: (d) => `${parseFloat(d).toFixed(1)} / 5 ⭐`,
       },
       { data: "sweetness", title: "Sweetness" },
@@ -82,7 +91,12 @@ $(document).ready(function () {
   ratingSlider.on("input", () => {
     ratingValue.text(parseFloat(ratingSlider.val()).toFixed(1));
   });
-
+  kayRatingSlider.on("input", () => {
+    kayRatingValue.text(parseFloat(kayRatingSlider.val()).toFixed(1));
+  });
+  rebeckaRatingSlider.on("input", () => {
+    rebeckaRatingValue.text(parseFloat(rebeckaRatingSlider.val()).toFixed(1));
+  });
   sweetnessSlider.on("input", () => {
     sweetnessValue.text(sweetnessSlider.val());
   });
@@ -93,7 +107,8 @@ $(document).ready(function () {
       name: $("#wine-name").val().trim(),
       alcohol: parseFloat($("#alcohol-amount").val()),
       grape: $("#grape-type").val().trim(),
-      rating: parseFloat($("#wine-rating").val()),
+      kayRating: parseFloat($("#kay-rating").val()),
+      rebeckaRating: parseFloat($("#rebecka-rating").val()),
       sweetness: parseInt($("#sweetness").val()),
       comment: $("#user-comment").val().trim(),
     };
@@ -103,6 +118,8 @@ $(document).ready(function () {
       table.row.add(saved[0]).draw();
       wineForm[0].reset();
       ratingValue.text("2.5");
+      kayRatingValue.text("2.5");
+      rebeckaRatingValue.text("2.5");
       sweetnessValue.text("6");
     }
   });
