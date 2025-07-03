@@ -14,7 +14,12 @@
     <link
       rel="stylesheet"
       type="text/css"
-      href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.css"
+      href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://cdn.datatables.net/responsive/2.2.9/css/responsive.dataTables.min.css"
     />
   </head>
   <body>
@@ -105,7 +110,11 @@
         <section class="list-container">
           <h2>My Wines</h2>
           <div class="table-wrapper">
-            <table id="wine-table" class="display">
+            <table
+              id="wine-table"
+              class="display responsive nowrap"
+              width="100%"
+            >
               <thead>
                 <tr>
                   <th>Wine Name</th>
@@ -127,13 +136,17 @@
     </div>
 
     <footer>
-      <p>&copy; 2024 Vinothèque. Cheers to good wine! 🍇</p>
+      <p>2025 | Vinothèque | Cheers to good wine! 🍇</p>
     </footer>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script
       type="text/javascript"
       charset="utf8"
       src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.js"
+    ></script>
+    <script
+      type="text/javascript"
+      src="https://cdn.datatables.net/responsive/2.2.9/js/dataTables.responsive.min.js"
     ></script>
     <script src="./js/app.js"></script>
   </body>
