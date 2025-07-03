@@ -1,3 +1,13 @@
+// Import Supabase Client CDN in your index.html head before app.js:
+// <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+
+// Replace with your actual Supabase URL and public anon key
+import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
+const SUPABASE_URL = "https://eozvtyhbrksljvvqvlkq.supabase.co";
+const SUPABASE_KEY =
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVvenZ0eWhicmtzbGp2dnF2bGtxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTE1NjcxOTYsImV4cCI6MjA2NzE0MzE5Nn0.undSFiOCF2KHM0B0vS_G1cP38WcV0dVANZst_lDrLLI";
+const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
+
 $(document).ready(function () {
   const wineForm = $("#wine-form");
   const ratingSlider = $("#wine-rating");
@@ -5,18 +15,39 @@ $(document).ready(function () {
   const sweetnessSlider = $("#sweetness");
   const sweetnessValue = $("#sweetness-value");
 
-  // --- Local Storage Functions ---
-  const getWines = () => {
-    return JSON.parse(localStorage.getItem("wines")) || [];
-  };
+  // Load wines from Supabase
+  async function loadWines() {
+    const { data, error } = await supabase.from("wines").select("*");
+    if (error) {
+      console.error("Error fetching wines:", error);
+      return [];
+    }
+    return data;
+  }
 
-  const saveWines = (wines) => {
-    localStorage.setItem("wines", JSON.stringify(wines));
-  };
+  // Save wine to Supabase
+  async function saveWine(wine) {
+    const { data, error } = await supabase
+      .from("wines")
+      .insert([wine])
+      .select();
+    if (error) {
+      console.error("Error saving wine:", error);
+    }
+    return data;
+  }
 
-  // --- Datatable Initialization ---
+  // Delete wine from Supabase
+  async function deleteWine(wineId) {
+    const { error } = await supabase.from("wines").delete().eq("id", wineId);
+    if (error) {
+      console.error("Error deleting wine:", error);
+    }
+  }
+
+  // Initialize DataTable
   const table = $("#wine-table").DataTable({
-    data: getWines(),
+    data: [],
     columns: [
       { data: "name", title: "Wine Name" },
       { data: "alcohol", title: "ABV %", render: (d) => `${d}%` },
@@ -42,24 +73,23 @@ $(document).ready(function () {
     },
   });
 
-  // --- Event Handlers ---
+  loadWines().then((wines) => {
+    wines.forEach((wine) => {
+      table.row.add(wine).draw();
+    });
+  });
 
-  // Update rating value display when slider moves
   ratingSlider.on("input", () => {
     ratingValue.text(parseFloat(ratingSlider.val()).toFixed(1));
   });
 
-  // Update sweetness value display when slider moves
   sweetnessSlider.on("input", () => {
     sweetnessValue.text(sweetnessSlider.val());
   });
 
-  // Handle form submission
-  wineForm.on("submit", (e) => {
+  wineForm.on("submit", async (e) => {
     e.preventDefault();
-
     const wine = {
-      id: Date.now(),
       name: $("#wine-name").val().trim(),
       alcohol: parseFloat($("#alcohol-amount").val()),
       grape: $("#grape-type").val().trim(),
@@ -68,25 +98,18 @@ $(document).ready(function () {
       comment: $("#user-comment").val().trim(),
     };
 
-    const wines = getWines();
-    wines.push(wine);
-    saveWines(wines);
-
-    table.row.add(wine).draw();
-
-    wineForm[0].reset();
-    ratingValue.text("2.5");
-    sweetnessValue.text("6");
+    const saved = await saveWine(wine);
+    if (saved && saved.length > 0) {
+      table.row.add(saved[0]).draw();
+      wineForm[0].reset();
+      ratingValue.text("2.5");
+      sweetnessValue.text("6");
+    }
   });
 
-  // Handle delete button clicks using event delegation
-  $("#wine-table tbody").on("click", ".delete-btn", function () {
+  $("#wine-table tbody").on("click", ".delete-btn", async function () {
     const wineId = parseInt($(this).attr("data-id"));
-
-    let wines = getWines();
-    wines = wines.filter((wine) => wine.id !== wineId);
-    saveWines(wines);
-
+    await deleteWine(wineId);
     table.row($(this).parents("tr")).remove().draw();
   });
 });
