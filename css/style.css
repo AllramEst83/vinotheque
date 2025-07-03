@@ -193,15 +193,17 @@ table tr {
   border-radius: 8px;
   padding: 15px;
   box-shadow: 0 2px 5px var(--shadow-color);
+  text-align: center;
+  justify-content: center;
 }
 
 table td {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
   padding: 8px 0;
   border-bottom: 1px dashed var(--border-color);
-  text-align: right;
+  text-align: center;
   word-break: break-word;
 }
 
@@ -265,7 +267,7 @@ footer {
   table td {
     display: table-cell; /* Revert to standard cells */
     padding: 12px 15px;
-    text-align: left; /* Align text left on desktop */
+    text-align: center; /* Align text center on desktop */
     border-bottom: none;
   }
 
@@ -275,7 +277,7 @@ footer {
 
   table th {
     padding: 12px 15px;
-    text-align: left;
+    text-align: center;
     font-weight: 600;
     background-color: #f2f2f2;
   }
@@ -327,4 +329,12 @@ footer {
     padding-left: 10px;
     padding-right: 10px;
   }
+}
+
+.dataTables_filter {
+  margin-bottom: 18px;
+}
+
+.dataTables_length {
+  margin-bottom: 12px;
 }
