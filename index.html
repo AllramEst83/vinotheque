@@ -11,6 +11,11 @@
       href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&display=swap"
       rel="stylesheet"
     />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.css"
+    />
   </head>
   <body>
     <div class="container">
@@ -100,22 +105,14 @@
         <section class="list-container">
           <h2>My Wines</h2>
           <div class="table-wrapper">
-            <table id="wine-table">
+            <table id="wine-table" class="display">
               <thead>
                 <tr>
                   <th>Wine Name</th>
-                  <th class="sortable" data-sort="alcohol">
-                    ABV % <span class="sort-icon"></span>
-                  </th>
-                  <th class="sortable" data-sort="grape">
-                    Grape <span class="sort-icon"></span>
-                  </th>
-                  <th class="sortable" data-sort="rating">
-                    Rating <span class="sort-icon"></span>
-                  </th>
-                  <th class="sortable" data-sort="sweetness">
-                    Sweetness <span class="sort-icon"></span>
-                  </th>
+                  <th>ABV %</th>
+                  <th>Grape</th>
+                  <th>Rating</th>
+                  <th>Sweetness</th>
                   <th>Comment</th>
                   <th>Action</th>
                 </tr>
@@ -132,7 +129,12 @@
     <footer>
       <p>&copy; 2024 Vinothèque. Cheers to good wine! 🍇</p>
     </footer>
-
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script
+      type="text/javascript"
+      charset="utf8"
+      src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.js"
+    ></script>
     <script src="./js/app.js"></script>
   </body>
 </html>
