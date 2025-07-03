@@ -4,7 +4,8 @@
 // Replace with your actual Supabase URL and public anon key
 import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
 const SUPABASE_URL = "https://eozvtyhbrksljvvqvlkq.supabase.co";
-const SUPABASE_KEY = "SERVICE_ROLE_KEY";
+const SUPABASE_KEY =
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVvenZ0eWhicmtzbGp2dnF2bGtxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTE1NjcxOTYsImV4cCI6MjA2NzE0MzE5Nn0.undSFiOCF2KHM0B0vS_G1cP38WcV0dVANZst_lDrLLI";
 const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
 
 $(document).ready(function () {
