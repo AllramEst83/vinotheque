@@ -14,45 +14,43 @@ $(document).ready(function () {
   const openBtn = document.getElementById("open-modal");
   const closeBtn = document.getElementById("close-modal");
 
-  // Initialize DataTable
-  const table = $("#wine-table").DataTable({
-    data: [],
-    columns: [
-      { data: "name", title: "Wine Name" },
-      { data: "alcohol", title: "ABV %", render: (d) => `${d}%` },
-      { data: "grape", title: "Grape" },
-      {
-        data: "kayRating",
-        title: "Rated by Kay",
-        render: (d) => `${parseFloat(d).toFixed(1)} / 5 ⭐`,
-      },
-      {
-        data: "rebeckaRating",
-        title: "Rated by Rebecka",
-        render: (d) => `${parseFloat(d).toFixed(1)} / 5 ⭐`,
-      },
-      { data: "sweetness", title: "Sweetness" },
-      { data: "comment", title: "Comment" },
-      {
-        data: "id",
-        title: "Action",
-        render: (data) =>
-          `<button class="delete-btn" data-id="${data}">Delete</button>`,
-        orderable: false,
-      },
-    ],
-    responsive: true,
-    language: {
-      emptyTable: "No wines added yet.",
-    },
-  });
+  // ✅ Initialize Grid.js instead of DataTable
+  let grid;
 
   loadWines().then((wines) => {
-    wines.forEach((wine) => {
-      table.row.add(wine).draw();
-    });
+    const rows = wines.map((wine) => [
+      wine.name,
+      `${wine.alcohol}%`,
+      wine.grape,
+      wine.sweetness,
+      `${parseFloat(wine.kayRating).toFixed(1)} / 5 ⭐`,
+      `${parseFloat(wine.rebeckaRating).toFixed(1)} / 5 ⭐`,
+      wine.comment || "",
+      `<button class="delete-btn" data-id="${wine.id}">Delete</button>`,
+    ]);
+
+    grid = new gridjs.Grid({
+      columns: [
+        "Wine Name",
+        "ABV %",
+        "Grape",
+        "Sweetness",
+        "Rated by Kay",
+        "Rated by Rebecka",
+        "Comment",
+        {
+          name: "Action",
+          formatter: (_, row) => gridjs.html(`${row.cells[7].data}`),
+        },
+      ],
+      data: rows,
+      pagination: true,
+      search: true,
+      sort: true,
+    }).render(document.getElementById("wine-table"));
   });
 
+  // Same sliders and form listeners as before
   ratingSlider.on("input", () => {
     ratingValue.text(parseFloat(ratingSlider.val()).toFixed(1));
   });
@@ -80,7 +78,24 @@ $(document).ready(function () {
 
     const saved = await saveWine(wine);
     if (saved && saved.length > 0) {
-      table.row.add(saved[0]).draw();
+      grid
+        .updateConfig({
+          data: [
+            ...grid.config.data,
+            [
+              saved[0].name,
+              `${saved[0].alcohol}%`,
+              saved[0].grape,
+              saved[0].sweetness,
+              `${parseFloat(saved[0].kayRating).toFixed(1)} / 5 ⭐`,
+              `${parseFloat(saved[0].rebeckaRating).toFixed(1)} / 5 ⭐`,
+              saved[0].comment || "",
+              `<button class="delete-btn" data-id="${saved[0].id}">Delete</button>`,
+            ],
+          ],
+        })
+        .forceRender();
+
       wineForm[0].reset();
       ratingValue.text("2.5");
       kayRatingValue.text("2.5");
@@ -94,15 +109,18 @@ $(document).ready(function () {
     }
   });
 
-  $("#wine-table tbody").on("click", ".delete-btn", async function () {
+  // Delete handler
+  $(document).on("click", ".delete-btn", async function () {
     const wineId = parseInt($(this).attr("data-id"));
     await deleteWine(wineId);
-    // Handle responsive child row selection
-    const tr = $(this).closest("tr");
-    const row = table.row(tr.hasClass("child") ? tr.prev() : tr);
-    row.remove().draw(false);
+    // Filter out deleted row and re-render
+    const filtered = grid.config.data.filter(
+      (row) => !row[7].includes(`data-id="${wineId}"`)
+    );
+    grid.updateConfig({ data: filtered }).forceRender();
   });
 
+  // Modal handlers same as before
   openBtn.onclick = function () {
     modal.classList.add("show");
     setTimeout(() => {

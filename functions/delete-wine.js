@@ -20,5 +20,5 @@ export const handler = async (event) => {
     return response(500, { error: error.message });
   }
 
-  return response(200, data);
+  return response(200, { success: true });
 };
