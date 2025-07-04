@@ -1,3 +1,5 @@
+import { loadWines, saveWine, deleteWine } from "./api.js";
+
 $(document).ready(function () {
   const wineForm = $("#wine-form");
   const ratingSlider = $("#wine-rating");
@@ -8,29 +10,9 @@ $(document).ready(function () {
   const kayRatingValue = $("#kay-rating-value");
   const rebeckaRatingSlider = $("#rebecka-rating");
   const rebeckaRatingValue = $("#rebecka-rating-value");
-
-  // Load wines from Supabase
-  async function loadWines() {
-    const res = await fetch("/.netlify/functions/get-wines");
-    return await res.json();
-  }
-
-  // Save wine to Supabase
-  async function saveWine(wine) {
-    const res = await fetch("/.netlify/functions/save-wine", {
-      method: "POST",
-      body: JSON.stringify(wine),
-    });
-    return await res.json();
-  }
-
-  // Delete wine from Supabase
-  async function deleteWine(wineId) {
-    await fetch("/.netlify/functions/delete-wine", {
-      method: "POST",
-      body: JSON.stringify({ id: wineId }),
-    });
-  }
+  const modal = document.getElementById("wine-modal");
+  const openBtn = document.getElementById("open-modal");
+  const closeBtn = document.getElementById("close-modal");
 
   // Initialize DataTable
   const table = $("#wine-table").DataTable({
@@ -104,6 +86,11 @@ $(document).ready(function () {
       kayRatingValue.text("2.5");
       rebeckaRatingValue.text("2.5");
       sweetnessValue.text("6");
+
+      modal.classList.remove("show");
+      setTimeout(() => {
+        modal.style.display = "none";
+      }, 300);
     }
   });
 
@@ -115,4 +102,25 @@ $(document).ready(function () {
     const row = table.row(tr.hasClass("child") ? tr.prev() : tr);
     row.remove().draw(false);
   });
+
+  openBtn.onclick = function () {
+    modal.classList.add("show");
+    setTimeout(() => {
+      modal.style.display = "block";
+    }, 10);
+  };
+  closeBtn.onclick = function () {
+    modal.classList.remove("show");
+    setTimeout(() => {
+      modal.style.display = "none";
+    }, 300);
+  };
+  window.onclick = function (event) {
+    if (event.target == modal) {
+      modal.classList.remove("show");
+      setTimeout(() => {
+        modal.style.display = "none";
+      }, 300);
+    }
+  };
 });

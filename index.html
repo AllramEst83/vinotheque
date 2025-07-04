@@ -30,102 +30,126 @@
       </header>
 
       <main>
-        <section class="form-container">
-          <h2>Add a New Wine</h2>
-          <form id="wine-form">
-            <div class="form-group">
-              <label for="wine-name">Wine Name</label>
-              <input
-                type="text"
-                id="wine-name"
-                placeholder="e.g., Château Margaux"
-                required
-              />
-            </div>
-            <div class="form-group">
-              <label for="alcohol-amount">Alcohol % (ABV)</label>
-              <input
-                type="number"
-                id="alcohol-amount"
-                step="0.1"
-                placeholder="e.g., 13.5"
-                required
-              />
-            </div>
-            <div class="form-group">
-              <label for="grape-type">Grape</label>
-              <input
-                type="text"
-                id="grape-type"
-                placeholder="e.g., Cabernet Sauvignon"
-                required
-              />
-            </div>
-            <div class="form-group">
-              <label for="sweetness">Sweetness (0-12)</label>
-              <div class="rating-group">
-                <span>0</span>
+        <!-- Modal for Add Wine Form -->
+        <div id="wine-modal" class="modal" style="display: none">
+          <div class="modal-content">
+            <span class="close-modal" id="close-modal">&times;</span>
+            <h2>Add a New Wine</h2>
+            <form id="wine-form">
+              <div class="form-group">
+                <label for="wine-name">Wine Name</label>
                 <input
-                  type="range"
-                  id="sweetness"
-                  min="0"
-                  max="12"
-                  step="1"
-                  value="6"
+                  type="text"
+                  id="wine-name"
+                  placeholder="e.g., Château Margaux"
+                  required
                 />
-                <span id="sweetness-value">6</span>
-                <span>/</span>
-                <span>12</span>
               </div>
-            </div>
-            <div class="form-group">
-              <label for="kay-rating">Rated by Kay (0-5)</label>
-              <div class="rating-group">
-                <span>0</span>
+              <div class="form-group">
+                <label for="alcohol-amount">Alcohol % (ABV)</label>
                 <input
-                  type="range"
-                  id="kay-rating"
-                  min="0"
-                  max="5"
-                  step="0.5"
-                  value="2.5"
+                  type="number"
+                  id="alcohol-amount"
+                  step="0.1"
+                  placeholder="e.g., 13.5"
+                  required
                 />
-                <span id="kay-rating-value">2.5</span>
-                <span>/</span>
-                <span>5</span>
               </div>
-            </div>
-            <div class="form-group">
-              <label for="rebecka-rating">Rated by Rebecka (0-5)</label>
-              <div class="rating-group">
-                <span>0</span>
+              <div class="form-group">
+                <label for="grape-type">Grape</label>
                 <input
-                  type="range"
-                  id="rebecka-rating"
-                  min="0"
-                  max="5"
-                  step="0.5"
-                  value="2.5"
+                  type="text"
+                  id="grape-type"
+                  placeholder="e.g., Cabernet Sauvignon"
+                  required
                 />
-                <span id="rebecka-rating-value">2.5</span>
-                <span>/</span>
-                <span>5</span>
               </div>
-            </div>
-            <div class="form-group">
-              <label for="user-comment">Comments</label>
-              <textarea
-                id="user-comment"
-                rows="4"
-                placeholder="Tasting notes, pairing ideas..."
-              ></textarea>
-            </div>
-            <button type="submit" class="btn">Add Wine</button>
-          </form>
-        </section>
+              <div class="form-group">
+                <label for="sweetness">Sweetness (0-12)</label>
+                <div class="rating-group">
+                  <input
+                    type="range"
+                    id="sweetness"
+                    min="0"
+                    max="12"
+                    step="1"
+                    value="6"
+                  />
+                  <span id="sweetness-value">6</span>
+                  <span>/</span>
+                  <span>12</span>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="kay-rating">Rated by Kay (0-5)</label>
+                <div class="rating-group">
+                  <input
+                    type="range"
+                    id="kay-rating"
+                    min="0"
+                    max="5"
+                    step="0.5"
+                    value="2.5"
+                  />
+                  <span id="kay-rating-value">2.5</span>
+                  <span>/</span>
+                  <span>5</span>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="rebecka-rating">Rated by Rebecka (0-5)</label>
+                <div class="rating-group">
+                  <input
+                    type="range"
+                    id="rebecka-rating"
+                    min="0"
+                    max="5"
+                    step="0.5"
+                    value="2.5"
+                  />
+                  <span id="rebecka-rating-value">2.5</span>
+                  <span>/</span>
+                  <span>5</span>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="user-comment">Comments</label>
+                <textarea
+                  id="user-comment"
+                  rows="4"
+                  placeholder="Tasting notes, pairing ideas..."
+                ></textarea>
+              </div>
+              <button type="submit" class="btn">Add Wine</button>
+            </form>
+          </div>
+        </div>
 
         <section class="list-container">
-          <h2>My Wines</h2>
+          <div
+            class="datatable-header"
+            style="
+              display: flex;
+              align-items: center;
+              justify-content: space-between;
+              gap: 1rem;
+            "
+          >
+            <h2 style="margin: 0">My Wines</h2>
+            <button
+              id="open-modal"
+              class="btn"
+              style="
+                padding: 6px 16px;
+                font-size: 1em;
+                margin-left: auto;
+                min-width: unset;
+                width: auto;
+              "
+            >
+              Add Wine
+            </button>
+          </div>
           <div class="table-wrapper">
             <table
               id="wine-table"
