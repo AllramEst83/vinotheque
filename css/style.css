@@ -384,3 +384,9 @@ footer {
   transform: translateY(0) scale(1);
   opacity: 1;
 }
+
+@media (min-width: 1200px) {
+  .container {
+    max-width: 1200px;
+  }
+}
