@@ -1,4 +1,5 @@
 import { createClient } from "@supabase/supabase-js";
+import { response } from "../utils/response";
 import dotenv from "dotenv";
 
 if (process.env.NODE_ENV !== "production") {
@@ -16,13 +17,8 @@ export const handler = async (event) => {
   const { data, error } = await supabase.from("wines").insert([wine]).select();
 
   if (error) {
-    return {
-      statusCode: 500,
-      body: JSON.stringify({ error: error.message }),
-    };
+    return response(500, { error: error.message });
   }
-  return {
-    statusCode: 200,
-    body: JSON.stringify(data),
-  };
+
+  return response(200, data);
 };

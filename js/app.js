@@ -110,6 +110,9 @@ $(document).ready(function () {
   $("#wine-table tbody").on("click", ".delete-btn", async function () {
     const wineId = parseInt($(this).attr("data-id"));
     await deleteWine(wineId);
-    table.row($(this).parents("tr")).remove().draw();
+    // Handle responsive child row selection
+    const tr = $(this).closest("tr");
+    const row = table.row(tr.hasClass("child") ? tr.prev() : tr);
+    row.remove().draw(false);
   });
 });

@@ -1,28 +1,21 @@
 import { createClient } from "@supabase/supabase-js";
+import { response } from "../utils/response";
 import dotenv from "dotenv";
 
 if (process.env.NODE_ENV !== "production") {
   dotenv.config();
 }
 
+const supabase = createClient(
+  process.env.SUPABASE_URL,
+  process.env.SUPABASE_KEY
+);
+
 export const handler = async () => {
-  console.log("SUPABASE_URL:", process.env.SUPABASE_URL);
-  console.log("SUPABASE_KEY:", process.env.SUPABASE_KEY);
-
-  const supabase = createClient(
-    process.env.SUPABASE_URL,
-    process.env.SUPABASE_KEY
-  );
-
   const { data, error } = await supabase.from("wines").select("*");
   if (error) {
-    return {
-      statusCode: 500,
-      body: JSON.stringify({ error: error.message }),
-    };
+    return response(500, { error: error.message });
   }
-  return {
-    statusCode: 200,
-    body: JSON.stringify(data),
-  };
+
+  return response(200, data);
 };
