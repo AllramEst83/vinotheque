@@ -1,0 +1,21 @@
+# Node dependencies
+node_modules/
+
+# Local env files (if any)
+.env
+.env.*
+
+# Netlify cache
+.netlify/
+
+# Build output (if you ever add one)
+dist/
+build/
+
+# OS files
+.DS_Store
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*

@@ -1,13 +1,3 @@
-// Import Supabase Client CDN in your index.html head before app.js:
-// <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
-
-// Replace with your actual Supabase URL and public anon key
-import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
-const SUPABASE_URL = "https://eozvtyhbrksljvvqvlkq.supabase.co";
-const SUPABASE_KEY =
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVvenZ0eWhicmtzbGp2dnF2bGtxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTE1NjcxOTYsImV4cCI6MjA2NzE0MzE5Nn0.undSFiOCF2KHM0B0vS_G1cP38WcV0dVANZst_lDrLLI";
-const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
-
 $(document).ready(function () {
   const wineForm = $("#wine-form");
   const ratingSlider = $("#wine-rating");
@@ -21,32 +11,25 @@ $(document).ready(function () {
 
   // Load wines from Supabase
   async function loadWines() {
-    const { data, error } = await supabase.from("wines").select("*");
-    if (error) {
-      console.error("Error fetching wines:", error);
-      return [];
-    }
-    return data;
+    const res = await fetch("/.netlify/functions/get-wines");
+    return await res.json();
   }
 
   // Save wine to Supabase
   async function saveWine(wine) {
-    const { data, error } = await supabase
-      .from("wines")
-      .insert([wine])
-      .select();
-    if (error) {
-      console.error("Error saving wine:", error);
-    }
-    return data;
+    const res = await fetch("/.netlify/functions/save-wine", {
+      method: "POST",
+      body: JSON.stringify(wine),
+    });
+    return await res.json();
   }
 
   // Delete wine from Supabase
   async function deleteWine(wineId) {
-    const { error } = await supabase.from("wines").delete().eq("id", wineId);
-    if (error) {
-      console.error("Error deleting wine:", error);
-    }
+    await fetch("/.netlify/functions/delete-wine", {
+      method: "POST",
+      body: JSON.stringify({ id: wineId }),
+    });
   }
 
   // Initialize DataTable

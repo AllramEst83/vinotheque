@@ -1,0 +1,27 @@
+{
+  "name": "vinotheque",
+  "version": "1.0.0",
+  "description": "Wine journal",
+  "homepage": "https://github.com/AllramEst83/vinotheque#readme",
+  "bugs": {
+    "url": "https://github.com/AllramEst83/vinotheque/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AllramEst83/vinotheque.git"
+  },
+  "license": "ISC",
+  "author": "Kay Wiberg",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "dev": "netlify dev",
+    "build": "echo \"No build step needed\"",
+    "start": "netlify dev",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.43.4",
+    "dotenv": "^17.0.1"
+  }
+}
